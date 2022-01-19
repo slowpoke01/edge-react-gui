@@ -32,7 +32,9 @@ type OwnProps = {
   bridge: AirshipBridge<void>,
   walletId: string,
   currencyCode: string,
-  onFeesChange: () => void
+  onFeesChange: () => void,
+  onMaxSet?: () => void,
+  onAmountChanged?: (nativeAmount: string, exchangeAmount: string) => void
 }
 
 type StateProps = {
@@ -87,7 +89,8 @@ class FlipInputModalComponent extends React.PureComponent<Props, State> {
   }
 
   handleExchangeAmountChange = ({ nativeAmount, exchangeAmount }: ExchangedFlipInputAmounts) => {
-    const { walletId, currencyCode, updateTransactionAmount } = this.props
+    const { walletId, currencyCode, updateTransactionAmount, onAmountChanged } = this.props
+    if (onAmountChanged != null) return onAmountChanged(nativeAmount, exchangeAmount)
     updateTransactionAmount(nativeAmount, exchangeAmount, walletId, currencyCode)
   }
 
@@ -103,7 +106,13 @@ class FlipInputModalComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  handleSendMaxAmount = () => this.props.updateMaxSpend(this.props.walletId, this.props.currencyCode)
+  handleSendMaxAmount = () => {
+    if (this.props.onMaxSet != null) {
+      this.props.onMaxSet()
+      return this.handleCloseModal()
+    }
+    return this.props.updateMaxSpend(this.props.walletId, this.props.currencyCode)
+  }
 
   renderErrorMessge = () => {
     const { errorMessage = this.state.errorMessage, theme } = this.props
