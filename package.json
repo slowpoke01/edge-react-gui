@@ -83,7 +83,7 @@
   },
   "dependencies": {
     "@bugsnag/react-native": "^7.3.5",
-    "@fioprotocol/fiosdk": "https://github.com/fioprotocol/fiosdk_typescript.git#feature/BD-2984-staking",
+    "@fioprotocol/fiosdk": "https://github.com/fioprotocol/fiosdk_typescript.git#develop",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.6.2",
     "@react-native-community/blur": "^3.6.0",
@@ -105,7 +105,7 @@
     "detox": "^18.10.0",
     "disklet": "^0.4.5",
     "edge-core-js": "https://github.com/EdgeApp/edge-core-js.git#william/staking-status",
-    "edge-currency-accountbased": "https://github.com/fioprotocol/edge-currency-accountbased.git#fio/staking-balance-demo-mainnet",
+    "edge-currency-accountbased": "https://github.com/EdgeApp/edge-currency-accountbased.git#fio/staking-balance-demo",
     "edge-currency-bitcoin": "^4.9.20",
     "edge-currency-monero": "^0.3.4",
     "edge-exchange-plugins": "^0.12.7",

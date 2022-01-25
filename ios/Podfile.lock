@@ -507,6 +507,8 @@ PODS:
     - React
   - RNDeviceInfo (5.6.1):
     - React
+  - RNEosEcc (1.0.0):
+    - React
   - RNFastImage (8.3.7):
     - React-Core
     - SDWebImage (~> 5.8)
@@ -744,6 +746,7 @@ DEPENDENCIES:
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - "RNEosEcc (from `../node_modules/@fioprotocol/fiosdk/ios`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
@@ -934,6 +937,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNEosEcc:
+    :path: "../node_modules/@fioprotocol/fiosdk/ios"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
   RNFBAnalytics:
@@ -990,7 +995,7 @@ SPEC CHECKSUMS:
   edge-core-js: 520a992ef313c00cabae686df2b366aa352132e6
   edge-login-ui-rn: bb229d0087d664f76a03949df7627ed49fed4144
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 86d9e030dbb7af0ba0eb4e1b6d52e4af26c7f1f3
+  FBReactNativeSpec: 73960c9b5961d01e0d225ab60082a5737e2cbd38
   Firebase: e1e089d9aac215a52442583f818ab61de3c4581b
   FirebaseAnalytics: 9f8f4feab1f3fddf4e4515f8f022fe6aa9e51043
   FirebaseCore: 0a43b7f1c5b36f3358cd703011ca4c7e0df55870
@@ -1064,6 +1069,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNDateTimePicker: a84d2b439666c9243d42a8396c588d4d1d36e3f3
   RNDeviceInfo: b6e650fbd234732c759544218657d549b4339038
+  RNEosEcc: 7b2477a557fe475126ff6294a6ccd9e121faab27
   RNFastImage: a7384db75df352500261e8e8f1ac2026def26102
   RNFBAnalytics: 454b17745d3824156cb906e2777d85f6848bf3e1
   RNFBApp: 02bde3edecf2e9694b908a5d3504e03449980f20
