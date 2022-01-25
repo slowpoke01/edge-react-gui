@@ -26,7 +26,19 @@ export function parseDeepLink(uri: string, opts: { aztecoApiKey?: string } = {})
     return parseDownloadLink(url)
   }
 
-  // Handle the edge:// protocol:
+  // Handle bitpay.com links.
+  // We always want to bypass the plugin, even if a scheme (i.e. bitcoin:) is
+  // defined because it is valid for the user to accept any supported currency
+  // besides the specific currency defined in the uri's scheme.
+  if (uri.includes('https:') && uri.includes('bitpay.com')) {
+    if (url.protocol !== 'https:') {
+      uri = uri.replace(url.protocol, '')
+      uri = uri.replace('?r=', '')
+    }
+    return { type: 'bitPay', uri }
+  }
+
+  // Handle the edge:// scheme:
   if (url.protocol === 'edge:') {
     return parseEdgeProtocol(url)
   }
@@ -120,6 +132,10 @@ function parseEdgeProtocol(url: URL): DeepLink {
         throw new SyntaxError('No request-address field')
       }
       return parseReturnAddress(url, currencyNameMatch[1])
+    }
+
+    case 'https': {
+      if (url.includes('bitpay')) return { type: 'other', uri: 'https:' + url.pathname, protocol: 'bitpay' }
     }
   }
 

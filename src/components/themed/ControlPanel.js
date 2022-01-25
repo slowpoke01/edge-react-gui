@@ -12,7 +12,7 @@ import { sprintf } from 'sprintf-js'
 
 import { deleteLocalAccount } from '../../actions/AccountActions.js'
 import { logoutRequest } from '../../actions/LoginActions.js'
-import { loginQrCodeScanned, qrCodeScanned } from '../../actions/ScanActions.js'
+import { parseScannedUri, qrCodeScanned } from '../../actions/ScanActions.js'
 import { selectWalletFromModal } from '../../actions/WalletActions'
 import edgeLogo from '../../assets/images/edgeLogo/Edge_logo_S.png'
 import { Fontello } from '../../assets/vector'
@@ -122,13 +122,12 @@ export function ControlPanel(props: Props) {
 
   const handleLoginQr = () => {
     Actions.drawerClose()
-    Airship.show(bridge => <ScanModal bridge={bridge} title={s.strings.scan_qr_label} isAlbum={false} />)
-      .then((result: string | void) => {
-        if (result) {
-          dispatch(loginQrCodeScanned(result))
-        }
-      })
-      .catch(showError)
+    // Airship.show(bridge => <ScanModal bridge={bridge} title={s.strings.scan_qr_label} isAlbum={false} />)
+    //   .then((result: string | void) => {
+    //     dispatch(parseScannedUri('https://bitpay.com/i/6fvnnA63FaxZgmiHTaLeAm'))
+    //   })
+    //   .catch(showError)
+    dispatch(parseScannedUri('bitcoin:?r=https://test.bitpay.com/i/Vsgs8eCDXtJXjSkQ9m1frC'))
   }
 
   const handleShareApp = () => {

@@ -141,6 +141,8 @@ export const parseScannedUri = (data: string, customErrorTitle?: string, customE
           console.log(e)
         }
         break
+      case 'edgeLogin':
+      case 'bitPay':
       default:
         dispatch(launchDeepLink(deepLink))
         return
@@ -149,6 +151,7 @@ export const parseScannedUri = (data: string, customErrorTitle?: string, customE
     return showError(error)
   }
 
+  // Coin operations
   try {
     const parsedUri: EdgeParsedUri & { paymentProtocolURL?: string } = await edgeWallet.parseUri(data, currencyCode)
     dispatch({ type: 'PARSE_URI_SUCCEEDED', data: { parsedUri } })

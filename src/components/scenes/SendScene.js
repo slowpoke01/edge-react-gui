@@ -571,7 +571,6 @@ class SendComponent extends React.PureComponent<Props, State> {
     const { pending, resetSlider, sliderDisabled, theme } = this.props
     const { loading, recipientAddress, resetSlider: localResetSlider } = this.state
     const styles = getStyles(theme)
-
     return (
       <SceneWrapper background="theme">
         <KeyboardAwareScrollView extraScrollHeight={theme.rem(2.75)} enableOnAndroid>

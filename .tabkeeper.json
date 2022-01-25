@@ -1,0 +1,42 @@
+[
+	{
+		"name": "WIP",
+		"paths": [
+			"/Users/jontz/source/edge-react-gui/src/util/DeepLinkParser.js",
+			"/Users/jontz/source/edge-react-gui/src/actions/DeepLinkingActions.js",
+			"/Users/jontz/source/edge-react-gui/src/components/modals/paymentProtocolUriReceived.js",
+			"/Users/jontz/source/edge-react-gui/src/actions/ScanActions.js",
+			"/Users/jontz/source/edge-react-gui/src/components/themed/ControlPanel.js",
+			"/Users/jontz/source/edge-react-gui/src/components/modals/ScanModal.js",
+			"/Users/jontz/source/edge-react-gui/src/types/DeepLinkTypes.js",
+			"/Users/jontz/source/edge-react-gui/src/components/themed/AddressTile.js",
+			"/Users/jontz/source/edge-react-gui/src/components/scenes/CryptoExchangeScene.js",
+			"/Users/jontz/source/edge-react-gui/src/components/modals/WalletListModal.js",
+			"/Users/jontz/source/edge-react-gui/src/util/GuiPluginTools.js",
+			"scm/git/scm0/input",
+			"/Users/jontz/source/edge-react-gui/src/actions/WalletActions.js",
+			"/Users/jontz/Library/Application Support/Code/User/settings.json",
+			"",
+			"/Users/jontz/source/edge-react-gui/src/components/scenes/TransactionDetailsScene.js",
+			"/Users/jontz/source/edge-react-gui/src/components/scenes/WalletListScene.js",
+			"/Users/jontz/source/edge-react-gui/src/types/routerTypes.js",
+			"/Users/jontz/source/edge-react-gui/src/components/scenes/AddTokenScene.js",
+			"/Users/jontz/source/edge-react-gui/src/components/Main.ui.js",
+			"/Users/jontz/source/edge-react-gui/src/components/themed/MenuTab.js",
+			"/Users/jontz/source/edge-react-gui/src/components/scenes/CreateWalletReviewScene.js",
+			"/Users/jontz/source/edge-react-gui/src/components/themed/WalletList.js",
+			"/Users/jontz/source/edge-react-gui/src/util/utils.js",
+			"/Users/jontz/source/edge-react-gui/env.json",
+			"/Users/jontz/source/edge-react-gui/src/components/themed/TransactionListTop.js",
+			"/Users/jontz/source/edge-react-gui/src/actions/SendConfirmationActions.js",
+			"/Users/jontz/source/edge-react-gui/src/components/modals/paymentProtocolUriReceived.js.git",
+			"/ignoredSettings",
+			"/settings/resourceLanguage",
+			"/launch",
+			"/token-styling",
+			"/textmate-colors",
+			"/workbench-colors",
+			"/settings/user"
+		]
+	}
+]

@@ -126,7 +126,7 @@ const Component = (props: Props) => {
             return
           }
 
-          console.log(`QR code read from photo libary:`, response.values[0])
+          console.log(`QR code read from photo library:`, response.values[0])
           bridge.resolve(response.values[0])
         } catch (error) {
           showError(error)
