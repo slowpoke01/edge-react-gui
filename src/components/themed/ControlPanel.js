@@ -129,9 +129,11 @@ export function ControlPanel(props: Props) {
     Actions.drawerClose()
     Airship.show(bridge => <ScanModal bridge={bridge} title={s.strings.scan_qr_label} isAlbum={false} />)
       .then((result: string | void) => {
-        if (result) {
-          dispatch(parseScannedUri(result))
-        }
+        dispatch(
+          parseScannedUri(
+            'wc:cc5dc125-b2e7-4b52-ba24-42dcc273b2fd@1?bridge=https%3A%2F%2Fz.bridge.walletconnect.org&key=cbc2696fc5360c9a582766984c414e8f4c3e077b97c92008316ddb7657627e62'
+          )
+        )
       })
       .catch(showError)
   }
