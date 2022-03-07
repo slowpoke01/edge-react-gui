@@ -12,7 +12,7 @@ import { ListModal } from './ListModal.js'
 type Props = {
   bridge: AirshipBridge<string | void>,
   title: string,
-  items: Array<{ icon?: string | number | React.Node, name: string }>, // Icon strings are image uri, numbers are local files
+  items: Array<{ icon: string | number | React.Node, name: string }>, // Icon strings are image uri, numbers are local files
   selected?: string
 }
 
@@ -23,21 +23,16 @@ export function RadioListModal(props: Props) {
 
   function renderRow({ name, icon }): React.Node {
     const imageIcon = typeof icon === 'string' ? { uri: icon } : icon
-    const radioIcon = selected === name ? 'ios-radio-button-on' : 'ios-radio-button-off'
-    const radioColor = selected === name ? theme.iconTappable : theme.iconDeactivated
+    const radio = selected === name ? { icon: 'ios-radio-button-on', color: theme.iconTappable } : { icon: 'ios-radio-button-off', color: theme.iconTappable }
 
     return (
       <TouchableOpacity onPress={() => bridge.resolve(name)}>
         <View style={styles.row}>
           <View style={styles.iconContainer}>
-            {icon != null && (typeof icon === 'number' || typeof icon === 'string') ? (
-              <Image resizeMode="contain" source={imageIcon} style={styles.icon} />
-            ) : (
-              icon
-            )}
+            {typeof icon === 'number' || typeof icon === 'string' ? <Image resizeMode="contain" source={imageIcon} style={styles.icon} /> : icon}
           </View>
           <EdgeText style={styles.rowText}>{name}</EdgeText>
-          <IonIcon name={radioIcon} color={radioColor} size={theme.rem(1.25)} />
+          <IonIcon name={radio.icon} color={radio.color} size={theme.rem(1.25)} />
         </View>
       </TouchableOpacity>
     )
