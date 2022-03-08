@@ -11,6 +11,17 @@ const checkIfCategoryIsTransfer = (fullCategory: string): boolean => {
   return category.toLowerCase() === 'transfer'
 }
 
+export const exportTransactions = async (exportType: 'csv' | 'qbo', wallet: EdgeCurrencyWallet, txs: EdgeTransaction[], opts: EdgeGetTransactionsOptions = {}):  Promise<string> =>  {
+  const { currencyCode = wallet.currencyInfo.currencyCode, denomination } = opts
+
+  let denomName = ''
+  if (denomination != null) {
+    const denomObj = wallet.currencyInfo.denominations.find(edgeDenom => edgeDenom.multiplier === denomination)
+    if (denomObj != null) denomName = denomObj.name
+  }
+  return exportTransactionsToCSVInner(txs, currencyCode, wallet.fiatCurrencyCode, denomination, denomName)
+}
+
 export async function exportTransactionsToQBO(wallet: EdgeCurrencyWallet, txs: EdgeTransaction[], opts: EdgeGetTransactionsOptions): Promise<string> {
   const { currencyCode = wallet.currencyInfo.currencyCode, denomination } = opts
   return exportTransactionsToQBOInner(txs, currencyCode, wallet.fiatCurrencyCode, denomination, Date.now())
@@ -25,6 +36,51 @@ export async function exportTransactionsToCSV(wallet: EdgeCurrencyWallet, txs: E
     if (denomObj != null) denomName = denomObj.name
   }
   return exportTransactionsToCSVInner(txs, currencyCode, wallet.fiatCurrencyCode, denomination, denomName)
+
+  const items: any[] = []
+
+  for (const edgeTx of edgeTransactions) {
+    const amount: string = denom ? div(edgeTx.nativeAmount, denom, DECIMAL_PRECISION) : edgeTx.nativeAmount
+    const networkFeeField: string = denom ? div(edgeTx.networkFee, denom, DECIMAL_PRECISION) : edgeTx.networkFee
+    const { date, time } = makeCsvDateTime(edgeTx.date)
+    const { metadata = {} } = edgeTx
+    const { name = '', category = '', notes = '' } = metadata
+    const amountFiat = metadata ? String(metadata.amountFiat) : '0'
+    const csvData = { currencyCode, date, time, name, amount, denomName, fiatCurrencyCode, amountFiat, networkFeeField, category, notes, edgeTx }
+
+    const TRNAMT: string = denom ? div(edgeTx.nativeAmount, denom, DECIMAL_PRECISION) : edgeTx.nativeAmount
+    const TRNTYPE = lt(edgeTx.nativeAmount, '0') ? 'DEBIT' : 'CREDIT'
+    const DTPOSTED = makeOfxDate(edgeTx.date)
+    let NAME: string = ''
+    let amountFiat: number = 0
+    let category: string = ''
+    let notes: string = ''
+    if (edgeTx.metadata) {
+      NAME = edgeTx.metadata.name ? edgeTx.metadata.name : ''
+      amountFiat = edgeTx.metadata.amountFiat ? edgeTx.metadata.amountFiat : 0
+      category = edgeTx.metadata.category ? edgeTx.metadata.category : ''
+      notes = edgeTx.metadata.notes ? edgeTx.metadata.notes : ''
+    }
+    const absFiat = abs(amountFiat.toString())
+    const absAmount = abs(TRNAMT)
+    const CURRATE = absAmount !== '0' ? div(absFiat, absAmount, 8) : '0'
+    let memo = `// Rate=${CURRATE} ${fiatCurrencyCode}=${amountFiat} category="${category}" memo="${notes}"`
+    if (memo.length > 250) {
+      memo = memo.substring(0, 250) + '...'
+    }
+
+    if (isSentTransaction(edgeTx) && checkIfCategoryIsTransfer(category)) {
+      const absFiat = abs(amountFiat.toString())
+      const absAmount = abs(amount)
+      const rate = absAmount !== '0' ? div(absFiat, absAmount, 8) : '0'
+      const networkFeeFiat = toFixed(mul(networkFeeField, rate), 2, 2)
+
+      // items.push(processCsvData({ ...csvData, networkFeeField: '' }))
+      // items.push(processCsvData({ ...csvData, amount: '', amountFiat: networkFeeFiat }))
+    } else {
+      // items.push(processCsvData(csvData))
+    }
+  }
 }
 
 function padZero(val: string): string {
