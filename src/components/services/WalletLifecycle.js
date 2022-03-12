@@ -105,7 +105,7 @@ export class WalletLifecycleComponent extends React.Component<Props> {
 
     // If the booting list has < 3 items, boot some wallets:
     for (const walletId of activeWalletIds) {
-      if (this.booting.length >= 3) break
+      if (this.booting.length >= 8) break
 
       // Ignore missing wallets, started wallets, and already-booting wallets:
       const wallet = currencyWallets[walletId]
@@ -177,7 +177,7 @@ function bootWallet(wallet: EdgeCurrencyWallet, onBoot: () => void): WalletBoot 
         timeoutId = undefined
         if (!out.complete) onBoot()
         out.close()
-      }, 5000)
+      }, 2000)
     })
     .catch(showError)
 
