@@ -1,0 +1,449 @@
+
+➜  edge-react-gui git:(kurtis/componentJestTest) ✗ yarn test
+yarn run v1.22.17
+$ jest --config jest.config.js
+
+//TODO:add comma 
+ FAIL  src/__tests__/PromoCard.test.js
+  ● Test suite failed to run
+
+    SyntaxError: /Users/johndoe/Documents/edge-react-gui/src/__tests__/PromoCard.test.js: Unexpected token, expected "," (21:8)
+
+      19 |         currencyCodes: ['BTC'],
+      20 |         promotions: []  
+    > 21 |         ignoreAccountSwap: true,
+         |         ^
+      22 |         hiddenAccountMessages: { ['messageId']}
+      23 |       },
+      24 |       
+
+      at Object._raise (node_modules/@babel/parser/src/parser/error.js:151:45)
+      at Object.raiseWithData (node_modules/@babel/parser/src/parser/error.js:146:17)
+      at Object.raise (node_modules/@babel/parser/src/parser/error.js:89:17)
+      at Object.unexpected (node_modules/@babel/parser/src/parser/util.js:175:16)
+      at Object.expect (node_modules/@babel/parser/src/parser/util.js:150:28)
+      at Object.parseObjectLike (node_modules/@babel/parser/src/parser/expression.js:1937:14)
+      at Object.parseExprAtom (node_modules/@babel/parser/src/parser/expression.js:1145:21)
+      at Object.parseExprAtom (node_modules/@babel/parser/src/plugins/jsx/index.js:572:22)
+      at Object.parseExprSubscripts (node_modules/@babel/parser/src/parser/expression.js:680:23)
+      at Object.parseUpdate (node_modules/@babel/parser/src/parser/expression.js:660:21)
+
+//TODO:come back
+
+ FAIL  src/__tests__/OutlinedTextInput.test.js
+  ● Request › should render with some props
+
+    ReactShallowRenderer render(): Shallow rendering works only with custom components, but the provided element type was `undefined`.
+
+      41 |       theme: getTheme()
+      42 |     }
+    > 43 |     const actual = renderer.render(<Request {...props} />)
+         |                             ^
+      44 |
+      45 |     expect(actual).toMatchSnapshot()
+      46 |   })
+
+      at ReactShallowRenderer.render (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:762:13)
+      at Object.<anonymous> (src/__tests__/OutlinedTextInput.test.js:43:29)
+
+// TODO: undefined needs an object and fix currency code
+
+ FAIL  src/__tests__/WalletListSortableRow.test.js
+  ● Request › should render with loading props
+
+    TypeError: Cannot read properties of undefined (reading 'currencyCode')
+
+      55 |     }
+      56 |
+    > 57 |     const { currencyCode, pluginId } = wallet.currencyInfo
+         |             ^
+      58 |     const displayDenomination = getDisplayDenomination(pluginId, currencyCode)
+      59 |     const multiplier = displayDenomination.multiplier
+      60 |     const name = getWalletName(wallet)
+
+      at WalletListSortableRowComponent.render (src/components/themed/WalletListSortableRow.js:57:13)
+      at ReactShallowRenderer._mountClassComponent (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:898:37)
+      at ReactShallowRenderer.render (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:812:16)
+      at Object.<anonymous> (src/__tests__/WalletListSortableRow.test.js:23:29)
+
+
+
+// TODO: multiplier power of 10
+ FAIL  src/__tests__/ExchangedFlipInput.test.js (5.99 s)
+  ● Request › should render with loading props
+
+    InvalidLogInputValue: Must be a power of 10
+
+      77 |
+      78 |   // Calculate FlipInputFieldInfo from GuiCurrencyInfos
+    > 79 |   const secondaryPrecision: number = log10(props.secondaryCurrencyInfo.displayDenomination.multiplier)
+         |                                      ^
+      80 |   const primaryEntryPrecision = log10(props.primaryCurrencyInfo.displayDenomination.multiplier)
+      81 |   // Limit the precision of the primaryPrecision by what would be no more
+      82 |   // than 0.01 (of whateve fiat currency) accuracy when converting a fiat value into a crypto value.
+
+      at log10 (node_modules/biggystring/src/index.js:356:11)
+      at propsToState (src/components/themed/ExchangedFlipInput.js:79:38)
+      at new ExchangedFlipInput (src/components/themed/ExchangedFlipInput.js:129:18)
+      at ReactShallowRenderer.render (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:796:28)
+      at Object.<anonymous> (src/__tests__/ExchangedFlipInput.test.js:69:29)
+
+
+//TODO: pass theme
+ FAIL  src/__tests__/SelectFioAddress.test.js (6.507 s)
+  ● Request › should render with loading props
+
+    TypeError: Cannot read properties of undefined (reading 'dangerText')
+
+      235 |       return (
+      236 |         <Tile type="touchable" title={s.strings.select_fio_address_address_memo_error} onPress={this.openMessageInput}>
+    > 237 |           <EdgeText style={{ color: theme.dangerText }}>{memoError}</EdgeText>
+          |                                           ^
+      238 |         </Tile>
+      239 |       )
+      240 |     }
+
+      at SelectFioAddressComponent.renderFioMemo (src/components/themed/SelectFioAddress.js:237:43)
+      at SelectFioAddressComponent.render (src/components/themed/SelectFioAddress.js:262:15)
+      at ReactShallowRenderer._mountClassComponent (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:898:37)
+      at ReactShallowRenderer.render (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:812:16)
+      at Object.<anonymous> (src/__tests__/SelectFioAddress.test.js:69:29)
+
+ PASS  src/__tests__/TransactionRow.test.js
+ PASS  src/__tests__/utils.test.js
+ PASS  src/__tests__/TransactionDetails.ui.test.js
+ PASS  src/__tests__/LoginAction.test.js
+ PASS  src/__tests__/RootReducer.test.js
+ PASS  src/__tests__/CurrencySettings.ui.test.js (5.469 s)
+ PASS  src/__tests__/passwordReminderReducer.test.js
+ PASS  src/__tests__/sendConfirmationReducer.test.js
+ PASS  src/__tests__/ChangeMiningFee.test.js
+ PASS  src/__tests__/uiReducer.test.js
+ PASS  src/__tests__/SettingsScene.test.js (8.947 s)
+ PASS  src/__tests__/EdgeText.test.js
+ PASS  src/__tests__/TransactionExportActions.test.js
+ PASS  src/__tests__/BuyCrypto.test.js
+ PASS  src/__tests__/settingsReducer.test.js
+ PASS  src/__tests__/scenesReducer.test.js
+ PASS  src/__tests__/walletsReducer.test.js
+ PASS  src/__tests__/cryptoExchangeReducer.test.js
+ PASS  src/__tests__/GuiPlugins.test.js
+ PASS  src/__tests__/transactionDetailsReducer.test.js
+ PASS  src/__tests__/DeepLink.test.js
+ PASS  src/__tests__/spendingLimits.test.js
+ PASS  src/__tests__/matchJson.test.js
+ PASS  src/__tests__/editTokenReducer.test.js
+ PASS  src/__tests__/createWalletReducer.test.js
+ PASS  src/__tests__/scanReducer.test.js
+ PASS  src/__tests__/requestTypeReducer.test.js
+ PASS  src/__tests__/permissionsReducer.test.js
+ PASS  src/__tests__/transactionListReducer.test.js
+ PASS  src/__tests__/Request.test.js (10.051 s)
+ PASS  src/__tests__/FlipInput.test.js
+ PASS  src/__tests__/WalletProgressIcon.test.js
+ PASS  src/__tests__/WalletListCreateRow.test.js
+ PASS  src/__tests__/WalletListHeader.test.js
+ PASS  src/__tests__/WalletListCurrencyRow.test.js
+ PASS  src/__tests__/WalletListFooter.test.js
+ PASS  src/__tests__/TransactionListTop.test.js
+ PASS  src/__tests__/WiredBalanceBox.test.js
+ PASS  src/__tests__/WalletListRow.test.js
+ PASS  src/__tests__/WiredProgressBar.test.js
+ PASS  src/__tests__/WalletList.test.js
+ PASS  src/__tests__/WalletListEmptyRow.test.js.js
+ PASS  src/__tests__/EdgeTextField.test.js
+ PASS  src/locales/intl.test.js
+ PASS  src/__tests__/HiddenMenuButtons.test.js
+ PASS  src/__tests__/TransactionListRow.test.js
+ PASS  src/__tests__/LineTextDivider.test.js
+ PASS  src/__tests__/CardContent.test.js
+ PASS  src/__tests__/ClickableRow.test.js
+ PASS  src/__tests__/DataRow.test.js
+ PASS  src/__tests__/Tile.test.js
+ PASS  src/__tests__/ExchangeQuoteComponent.test.js
+ PASS  src/__tests__/displayTime.test.js
+ PASS  src/__tests__/Card.test.js
+ PASS  src/__tests__/SceneHeader.test.js
+ FAIL  src/__tests__/TestHelpers.js
+  ● Test suite failed to run
+
+    Your test suite must contain at least one test.
+
+      at onResult (node_modules/@jest/core/build/TestScheduler.js:175:18)
+      at node_modules/@jest/core/build/TestScheduler.js:316:17
+      at node_modules/emittery/index.js:260:13
+          at Array.map (<anonymous>)
+      at Emittery.emit (node_modules/emittery/index.js:258:23)
+
+
+//TODO: go over types
+ FAIL  src/__tests__/WalletListSwipeRow.test.js
+  ● Test suite failed to run
+
+    SyntaxError: /Users/johndoe/Documents/edge-react-gui/src/__tests__/WalletListSwipeRow.test.js: Unexpected token, expected "{" (19:50)
+
+      17 |       isToken: true,
+      18 |       openRowLeft: true,
+    > 19 |       selectWallet(walletId, currencyCode): 'void',
+         |                                                   ^
+      20 |       swipeRef: typeof SwipeRow,
+      21 |       swipeRow: true,
+      22 |       swipeDirection: 'left' | 'right' | null,
+
+      at Object._raise (node_modules/@babel/parser/src/parser/error.js:151:45)
+      at Object.raiseWithData (node_modules/@babel/parser/src/parser/error.js:146:17)
+      at Object.raise (node_modules/@babel/parser/src/parser/error.js:89:17)
+      at Object.unexpected (node_modules/@babel/parser/src/parser/util.js:175:16)
+      at Object.expect (node_modules/@babel/parser/src/parser/util.js:150:28)
+      at Object.parseBlock (node_modules/@babel/parser/src/parser/statement.js:1014:10)
+      at Object.parseFunctionBody (node_modules/@babel/parser/src/parser/expression.js:2441:24)
+      at Object.parseFunctionBody (node_modules/@babel/parser/src/plugins/flow/index.js:1796:20)
+      at Object.parseFunctionBodyAndFinish (node_modules/@babel/parser/src/parser/expression.js:2414:10)
+      at Object.parseFunctionBodyAndFinish (node_modules/@babel/parser/src/plugins/flow/index.js:1819:13)
+
+
+//TODO: bad syntax no | "or"
+ FAIL  src/__tests__/SelectableRow.test.js
+  ● Test suite failed to run
+
+    SyntaxError: /Users/johndoe/Documents/edge-react-gui/src/__tests__/SelectableRow.test.js: Unexpected token, expected "," (15:46)
+
+      13 |
+      14 |     const props = {
+    > 15 |       onPress: () => undefined | (() => async undefined),
+         |                                               ^
+      16 |       title: 'string' | 'hello',
+      17 |
+      18 |       subTitle: 'string',
+
+      at Object._raise (node_modules/@babel/parser/src/parser/error.js:151:45)
+      at Object.raiseWithData (node_modules/@babel/parser/src/parser/error.js:146:17)
+      at Object.raise (node_modules/@babel/parser/src/parser/error.js:89:17)
+      at Object.unexpected (node_modules/@babel/parser/src/parser/util.js:175:16)
+      at Object.expect (node_modules/@babel/parser/src/parser/util.js:150:28)
+      at Object.parseParenAndDistinguishExpression (node_modules/@babel/parser/src/parser/expression.js:1692:14)
+      at Object.parseParenAndDistinguishExpression (node_modules/@babel/parser/src/plugins/flow/index.js:3002:20)
+      at Object.parseExprAtom (node_modules/@babel/parser/src/parser/expression.js:1117:21)
+      at Object.parseExprAtom (node_modules/@babel/parser/src/plugins/jsx/index.js:572:22)
+      at Object.parseExprSubscripts (node_modules/@babel/parser/src/parser/expression.js:680:23)
+
+
+// TODO: Jest Mock async storage 
+ FAIL  src/__tests__/AddressTile.test.js
+  ● Test suite failed to run
+
+    [@RNC/AsyncStorage]: NativeModule: AsyncStorage is null.
+
+    To fix this issue try these steps:
+
+      • Run `react-native link @react-native-community/async-storage` in the project root.
+
+      • Rebuild and restart the app.
+
+      • Run the packager with `--clearCache` flag.
+
+      • If you are using CocoaPods on iOS, run `pod install` in the `ios` directory and then rebuild and re-run the app.
+
+      • If this happens while testing with Jest, check out docs how to integrate AsyncStorage with it: https://github.com/react-native-community/async-storage/blob/LEGACY/docs/Jest-integration.md
+
+    If none of these fix the issue, please open an issue on the Github repository: https://github.com/react-native-community/react-native-async-storage/issues
+
+      at Object.<anonymous> (node_modules/@react-native-community/async-storage/lib/AsyncStorage.js:22:9)
+      at Object.<anonymous> (node_modules/@react-native-community/async-storage/lib/index.js:5:1)
+
+(node:26650) V8: /Users/johndoe/Documents/edge-react-gui/node_modules/libsodium/dist/modules/libsodium.js:13 Linking failure in asm.js: Unexpected stdlib member
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+// TODO: forgot comma
+Summary of all failing tests
+ FAIL  src/__tests__/PromoCard.test.js
+  ● Test suite failed to run
+
+    SyntaxError: /Users/johndoe/Documents/edge-react-gui/src/__tests__/PromoCard.test.js: Unexpected token, expected "," (21:8)
+
+      19 |         currencyCodes: ['BTC'],
+      20 |         promotions: []
+    > 21 |         ignoreAccountSwap: true,
+         |         ^
+      22 |         hiddenAccountMessages: { ['messageId']}
+      23 |       },
+      24 |       
+
+      at Object._raise (node_modules/@babel/parser/src/parser/error.js:151:45)
+      at Object.raiseWithData (node_modules/@babel/parser/src/parser/error.js:146:17)
+      at Object.raise (node_modules/@babel/parser/src/parser/error.js:89:17)
+      at Object.unexpected (node_modules/@babel/parser/src/parser/util.js:175:16)
+      at Object.expect (node_modules/@babel/parser/src/parser/util.js:150:28)
+      at Object.parseObjectLike (node_modules/@babel/parser/src/parser/expression.js:1937:14)
+      at Object.parseExprAtom (node_modules/@babel/parser/src/parser/expression.js:1145:21)
+      at Object.parseExprAtom (node_modules/@babel/parser/src/plugins/jsx/index.js:572:22)
+      at Object.parseExprSubscripts (node_modules/@babel/parser/src/parser/expression.js:680:23)
+      at Object.parseUpdate (node_modules/@babel/parser/src/parser/expression.js:660:21)
+
+ FAIL  src/__tests__/OutlinedTextInput.test.js
+  ● Request › should render with some props
+
+    ReactShallowRenderer render(): Shallow rendering works only with custom components, but the provided element type was `undefined`.
+
+      41 |       theme: getTheme()
+      42 |     }
+    > 43 |     const actual = renderer.render(<Request {...props} />)
+         |                             ^
+      44 |
+      45 |     expect(actual).toMatchSnapshot()
+      46 |   })
+
+      at ReactShallowRenderer.render (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:762:13)
+      at Object.<anonymous> (src/__tests__/OutlinedTextInput.test.js:43:29)
+
+ FAIL  src/__tests__/WalletListSortableRow.test.js
+  ● Request › should render with loading props
+
+    TypeError: Cannot read properties of undefined (reading 'currencyCode')
+
+      55 |     }
+      56 |
+    > 57 |     const { currencyCode, pluginId } = wallet.currencyInfo
+         |             ^
+      58 |     const displayDenomination = getDisplayDenomination(pluginId, currencyCode)
+      59 |     const multiplier = displayDenomination.multiplier
+      60 |     const name = getWalletName(wallet)
+
+      at WalletListSortableRowComponent.render (src/components/themed/WalletListSortableRow.js:57:13)
+      at ReactShallowRenderer._mountClassComponent (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:898:37)
+      at ReactShallowRenderer.render (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:812:16)
+      at Object.<anonymous> (src/__tests__/WalletListSortableRow.test.js:23:29)
+
+ FAIL  src/__tests__/ExchangedFlipInput.test.js (5.99 s)
+  ● Request › should render with loading props
+
+    InvalidLogInputValue: Must be a power of 10
+
+      77 |
+      78 |   // Calculate FlipInputFieldInfo from GuiCurrencyInfos
+    > 79 |   const secondaryPrecision: number = log10(props.secondaryCurrencyInfo.displayDenomination.multiplier)
+         |                                      ^
+      80 |   const primaryEntryPrecision = log10(props.primaryCurrencyInfo.displayDenomination.multiplier)
+      81 |   // Limit the precision of the primaryPrecision by what would be no more
+      82 |   // than 0.01 (of whateve fiat currency) accuracy when converting a fiat value into a crypto value.
+
+      at log10 (node_modules/biggystring/src/index.js:356:11)
+      at propsToState (src/components/themed/ExchangedFlipInput.js:79:38)
+      at new ExchangedFlipInput (src/components/themed/ExchangedFlipInput.js:129:18)
+      at ReactShallowRenderer.render (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:796:28)
+      at Object.<anonymous> (src/__tests__/ExchangedFlipInput.test.js:69:29)
+
+ FAIL  src/__tests__/SelectFioAddress.test.js (6.507 s)
+  ● Request › should render with loading props
+
+    TypeError: Cannot read properties of undefined (reading 'dangerText')
+
+      235 |       return (
+      236 |         <Tile type="touchable" title={s.strings.select_fio_address_address_memo_error} onPress={this.openMessageInput}>
+    > 237 |           <EdgeText style={{ color: theme.dangerText }}>{memoError}</EdgeText>
+          |                                           ^
+      238 |         </Tile>
+      239 |       )
+      240 |     }
+
+      at SelectFioAddressComponent.renderFioMemo (src/components/themed/SelectFioAddress.js:237:43)
+      at SelectFioAddressComponent.render (src/components/themed/SelectFioAddress.js:262:15)
+      at ReactShallowRenderer._mountClassComponent (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:898:37)
+      at ReactShallowRenderer.render (node_modules/react-shallow-renderer/cjs/react-shallow-renderer.js:812:16)
+      at Object.<anonymous> (src/__tests__/SelectFioAddress.test.js:69:29)
+
+ FAIL  src/__tests__/TestHelpers.js
+  ● Test suite failed to run
+
+    Your test suite must contain at least one test.
+
+      at onResult (node_modules/@jest/core/build/TestScheduler.js:175:18)
+      at node_modules/@jest/core/build/TestScheduler.js:316:17
+      at node_modules/emittery/index.js:260:13
+          at Array.map (<anonymous>)
+      at Emittery.emit (node_modules/emittery/index.js:258:23)
+
+ FAIL  src/__tests__/WalletListSwipeRow.test.js
+  ● Test suite failed to run
+
+    SyntaxError: /Users/johndoe/Documents/edge-react-gui/src/__tests__/WalletListSwipeRow.test.js: Unexpected token, expected "{" (19:50)
+
+      17 |       isToken: true,
+      18 |       openRowLeft: true,
+    > 19 |       selectWallet(walletId, currencyCode): 'void',
+         |                                                   ^
+      20 |       swipeRef: typeof SwipeRow,
+      21 |       swipeRow: true,
+      22 |       swipeDirection: 'left' | 'right' | null,
+
+      at Object._raise (node_modules/@babel/parser/src/parser/error.js:151:45)
+      at Object.raiseWithData (node_modules/@babel/parser/src/parser/error.js:146:17)
+      at Object.raise (node_modules/@babel/parser/src/parser/error.js:89:17)
+      at Object.unexpected (node_modules/@babel/parser/src/parser/util.js:175:16)
+      at Object.expect (node_modules/@babel/parser/src/parser/util.js:150:28)
+      at Object.parseBlock (node_modules/@babel/parser/src/parser/statement.js:1014:10)
+      at Object.parseFunctionBody (node_modules/@babel/parser/src/parser/expression.js:2441:24)
+      at Object.parseFunctionBody (node_modules/@babel/parser/src/plugins/flow/index.js:1796:20)
+      at Object.parseFunctionBodyAndFinish (node_modules/@babel/parser/src/parser/expression.js:2414:10)
+      at Object.parseFunctionBodyAndFinish (node_modules/@babel/parser/src/plugins/flow/index.js:1819:13)
+
+ FAIL  src/__tests__/SelectableRow.test.js
+  ● Test suite failed to run
+
+    SyntaxError: /Users/johndoe/Documents/edge-react-gui/src/__tests__/SelectableRow.test.js: Unexpected token, expected "," (15:46)
+
+      13 |
+      14 |     const props = {
+    > 15 |       onPress: () => undefined | (() => async undefined),
+         |                                               ^
+      16 |       title: 'string' | 'hello',
+      17 |
+      18 |       subTitle: 'string',
+
+      at Object._raise (node_modules/@babel/parser/src/parser/error.js:151:45)
+      at Object.raiseWithData (node_modules/@babel/parser/src/parser/error.js:146:17)
+      at Object.raise (node_modules/@babel/parser/src/parser/error.js:89:17)
+      at Object.unexpected (node_modules/@babel/parser/src/parser/util.js:175:16)
+      at Object.expect (node_modules/@babel/parser/src/parser/util.js:150:28)
+      at Object.parseParenAndDistinguishExpression (node_modules/@babel/parser/src/parser/expression.js:1692:14)
+      at Object.parseParenAndDistinguishExpression (node_modules/@babel/parser/src/plugins/flow/index.js:3002:20)
+      at Object.parseExprAtom (node_modules/@babel/parser/src/parser/expression.js:1117:21)
+      at Object.parseExprAtom (node_modules/@babel/parser/src/plugins/jsx/index.js:572:22)
+      at Object.parseExprSubscripts (node_modules/@babel/parser/src/parser/expression.js:680:23)
+
+ FAIL  src/__tests__/AddressTile.test.js
+  ● Test suite failed to run
+
+    [@RNC/AsyncStorage]: NativeModule: AsyncStorage is null.
+
+    To fix this issue try these steps:
+
+      • Run `react-native link @react-native-community/async-storage` in the project root.
+
+      • Rebuild and restart the app.
+
+      • Run the packager with `--clearCache` flag.
+
+      • If you are using CocoaPods on iOS, run `pod install` in the `ios` directory and then rebuild and re-run the app.
+
+      • If this happens while testing with Jest, check out docs how to integrate AsyncStorage with it: https://github.com/react-native-community/async-storage/blob/LEGACY/docs/Jest-integration.md
+
+    If none of these fix the issue, please open an issue on the Github repository: https://github.com/react-native-community/react-native-async-storage/issues
+
+      at Object.<anonymous> (node_modules/@react-native-community/async-storage/lib/AsyncStorage.js:22:9)
+      at Object.<anonymous> (node_modules/@react-native-community/async-storage/lib/index.js:5:1)
+
+
+Snapshot Summary
+ › 1 snapshot file obsolete from 1 test suite. To remove it, run `yarn test -u`.
+   ↳   • src/__tests__/__snapshots__/AirshipFullScreenSpinner.test.js.snap
+
+Test Suites: 9 failed, 2 skipped, 55 passed, 64 of 66 total
+Tests:       4 failed, 2 skipped, 281 passed, 287 total
+Snapshots:   1 file obsolete, 62 passed, 62 total
+Time:        19.725 s
+Ran all test suites.
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+➜  edge-react-gui git:(kurtis/componentJestTest) ✗ 
