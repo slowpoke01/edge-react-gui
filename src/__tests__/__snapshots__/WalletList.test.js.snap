@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Request should render with loading props 1`] = `
+<SwipeListView
+  ListFooterComponent="hello"
+  ListHeaderComponent="string"
+  closeOnRowBeginSwipe={false}
+  closeOnRowOpen={true}
+  closeOnRowPress={true}
+  closeOnScroll={true}
+  contentOffset={
+    Object {
+      "y": 0,
+    }
+  }
+  data={Array []}
+  directionalDistanceChangeThreshold={2}
+  disableHiddenLayoutCalculation={false}
+  disableLeftSwipe={false}
+  disableRightSwipe={false}
+  keyboardShouldPersistTaps="handled"
+  leftOpenValue={0}
+  previewFirstRow={false}
+  previewRepeat={false}
+  previewRepeatDelay={1000}
+  recalculateHiddenLayout={false}
+  renderItem={[Function]}
+  rightOpenValue={0}
+  swipeToClosePercent={50}
+  swipeToOpenPercent={50}
+  swipeToOpenVelocityContribution={0}
+  useAnimatedList={false}
+  useFlatList={true}
+  useNativeDriver={true}
+  useSectionList={false}
+/>
+`;

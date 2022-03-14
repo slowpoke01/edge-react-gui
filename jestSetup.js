@@ -15,6 +15,11 @@ jest.mock('@react-native-firebase/analytics', () => () => ({
   logEvent() {},
   setUserId() {}
 }))
+
+jest.mock('rn-qr-generator', () => () => {
+  return Promise.detect({})
+})
+
 jest.mock('@react-native-firebase/iid', () => () => ({
   getToken() {
     return Promise.resolve('testingToken')

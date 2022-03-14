@@ -1,0 +1,47 @@
+/* globals describe it expect */
+/* eslint-disable flowtype/require-valid-file-annotation */
+
+import * as React from 'react'
+import ShallowRenderer from 'react-test-renderer/shallow'
+
+import { getTheme } from '../components/services/ThemeContext.js'
+import { OutlinedTextInputRef as Request } from '../components/themed/OutlinedTextInput.js'
+
+describe('Request', () => {
+  it('should render with some props', () => {
+    const renderer = new ShallowRenderer()
+
+    const props = {
+      value: 'string',
+      error: 'string',
+      label: 'string',
+      clearIcon: true, // Defaults to 'true'
+      marginRem: 0.5 | [0.5], // Defaults to 0.5
+      multiline: true, // Defaults to 'false'
+      searchIcon: true, // Defaults to 'false'
+
+      onBlur: () => undefined,
+      onChangeText: () => undefined,
+      onClear: () => undefined,
+      onFocus: () => undefined,
+
+      // Other React Native TextInput properties:
+      autoCapitalize: 'none' | 'sentences' | 'words' | 'characters', // Defaults to 'sentences'
+      autoCorrect: true, // Defaults to 'true'
+      blurOnSubmit: true, // Defaults to 'true'
+      inputAccessoryViewID: 'string',
+      keyboardType: 'default' | 'number-pad' | 'decimal-pad' | 'numeric' | 'email-address' | 'phone-pad', // Defaults to 'default'
+      maxLength: 11,
+      onSubmitEditing: () => undefined,
+      returnKeyType: 'done' | 'go' | 'next' | 'search' | 'send', // Defaults to 'done'
+      secureTextEntry: false, // Defaults to 'false'
+      testID: 'string',
+      autoFocus: true,
+      blurOnClear: true,
+      theme: getTheme()
+    }
+    const actual = renderer.render(<Request {...props} />)
+
+    expect(actual).toMatchSnapshot()
+  })
+})

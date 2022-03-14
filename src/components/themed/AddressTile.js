@@ -43,7 +43,7 @@ type State = {
 }
 type Props = OwnProps & StateProps & ThemeProps
 
-class AddressTileComponent extends React.PureComponent<Props, State> {
+export class AddressTileComponent extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props)
 

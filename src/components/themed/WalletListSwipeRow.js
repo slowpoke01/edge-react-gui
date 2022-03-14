@@ -36,7 +36,7 @@ type State = {
   leftRowOpened: boolean
 }
 
-class WalletListSwipeRowComponent extends React.PureComponent<Props & ThemeProps, State> {
+export class WalletListSwipeRowComponent extends React.PureComponent<Props & ThemeProps, State> {
   constructor(props) {
     super(props)
     this.state = {
