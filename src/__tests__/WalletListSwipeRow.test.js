@@ -4,10 +4,9 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { getTheme } from '../components/services/ThemeContext.js'
-import { WalletListSwipeRowComponent } from '../components/themed/WalletListSwipeRow.js'
+import { WalletListSwipeRow } from '../components/themed/WalletListSwipeRow.js'
 
-describe('Request', () => {
+describe('WalletListSwipeRow', () => {
   it('should render with loading props', () => {
     const renderer = new ShallowRenderer()
 
@@ -45,11 +44,10 @@ describe('Request', () => {
         swipeRef: 'swipeRow',
         swipeRow: true,
         swipeDirection: 'left',
-        leftRowOpened: true,
-        theme: getTheme()
+        leftRowOpened: true
       }
     }
-    const actual = renderer.render(<WalletListSwipeRowComponent {...props} />)
+    const actual = renderer.render(<WalletListSwipeRow {...props} />)
 
     expect(actual).toMatchSnapshot()
   })

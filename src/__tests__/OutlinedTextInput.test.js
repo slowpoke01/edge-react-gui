@@ -4,10 +4,9 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { getTheme } from '../components/services/ThemeContext.js'
-import { OutlinedTextInputRef as Request } from '../components/themed/OutlinedTextInput.js'
+import { OutlinedTextInput } from '../components/themed/OutlinedTextInput.js'
 
-describe('Request', () => {
+describe('OutlinedTextInput', () => {
   it('should render with some props', () => {
     const renderer = new ShallowRenderer()
 
@@ -37,10 +36,9 @@ describe('Request', () => {
       secureTextEntry: false, // Defaults to 'false'
       testID: 'string',
       autoFocus: true,
-      blurOnClear: true,
-      theme: getTheme()
+      blurOnClear: true
     }
-    const actual = renderer.render(<Request {...props} />)
+    const actual = renderer.render(<OutlinedTextInput {...props} />)
 
     expect(actual).toMatchSnapshot()
   })

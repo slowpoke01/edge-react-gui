@@ -205,7 +205,7 @@ exports[`Request should render with loading props 1`] = `
     }
   }
   useNativeDriver={true}
-  walletId="string"
+  walletId="myWallet"
 >
   <View
     style={
@@ -249,7 +249,7 @@ exports[`Request should render with loading props 1`] = `
     currencyCode=""
     gradient={true}
     onLongPress={[Function]}
-    walletId="string"
+    walletId="myWallet"
     walletName=""
   />
 </SwipeRow>

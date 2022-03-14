@@ -20,6 +20,8 @@ jest.mock('rn-qr-generator', () => () => {
   return Promise.detect({})
 })
 
+jest.mock('@react-native-community/async-storage', () => require('@react-native-community/async-storage/jest/async-storage-mock'))
+
 jest.mock('@react-native-firebase/iid', () => () => ({
   getToken() {
     return Promise.resolve('testingToken')
