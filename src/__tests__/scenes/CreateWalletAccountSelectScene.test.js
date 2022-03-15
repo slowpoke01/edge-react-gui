@@ -4,9 +4,9 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
+import { CreateWalletAccountSelect } from '../../components/scenes/CreateWalletAccountSelect.js'
+import { getTheme } from '../../components/services/ThemeContext.js'
 import { EDGE_CONTENT_SERVER } from '../../constants/WalletAndCurrencyConstants.js'
-import { CreateWalletAccountSelect } from '../components/scenes/CreateWalletAccountSelect.js'
-import { getTheme } from './../components/services/ThemeContext.js'
 
 describe('CreateWalletAccountSelect', () => {
   it('should render with loading props', () => {

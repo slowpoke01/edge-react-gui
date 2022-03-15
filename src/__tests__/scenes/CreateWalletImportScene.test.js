@@ -4,18 +4,19 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { CreateWalletName } from '../components/scenes/CreateWalletName.js'
-import { getTheme } from '../components/services/ThemeContext.js'
-import { fakeNavigation } from '../util/fake/fakeNavigation.js'
+import { CreateWalletImportComponent } from '../../components/modals/CreateWalletImportComponent.js'
+import { getTheme } from '../../components/services/ThemeContext.js'
+import { fakeNavigation } from '../../util/fake/fakeNavigation.js'
+import { fakeUser } from '../../util/fake-user.js'
 
-describe('createWalletName', () => {
+describe('CreateWalletImportComponent', () => {
   it('should render with loading props', () => {
     const renderer = new ShallowRenderer()
 
     const props = {
       navigation: fakeNavigation,
       route: {
-        name: 'createWalletName',
+        name: 'createWalletImport',
         params: {
           accountHandle: '',
           selectedWalletType: 'BTC',
@@ -24,9 +25,11 @@ describe('createWalletName', () => {
           existingWalletId: 'myWallet'
         }
       },
+      account: () => fakeUser,
+      context: { apiKey: '', appId: '' }, // used  EdgeContextOptions
       theme: getTheme()
     }
-    const actual = renderer.render(<CreateWalletName {...props} />)
+    const actual = renderer.render(<CreateWalletImportComponent {...props} />)
 
     expect(actual).toMatchSnapshot()
   })

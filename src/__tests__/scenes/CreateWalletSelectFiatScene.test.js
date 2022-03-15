@@ -4,18 +4,18 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { CreateWalletAccountSetup } from '../components/scenes/CreateWalletAccountSetup.js'
-import { getTheme } from '../components/services/ThemeContext.js'
-import { fakeNavigation } from '../util/fake/fakeNavigation.js'
+import { CreateWalletSelectFiatComponent } from '../../components/scenes/CreateWalletSelectFiat.js'
+import { getTheme } from '../../components/services/ThemeContext.js'
+import { fakeNavigation } from '../../util/fake/fakeNavigation.js'
 
-describe('CreateWalletAccountSelect', () => {
+describe('CreateWalletSelectFiatComponent', () => {
   it('should render with loading props', () => {
     const renderer = new ShallowRenderer()
 
     const props = {
       navigation: fakeNavigation,
       route: {
-        name: 'createWalletAccountSetup',
+        name: 'createWalletReview',
         params: {
           accountHandle: '',
           selectedWalletType: 'BTC',
@@ -24,14 +24,15 @@ describe('CreateWalletAccountSelect', () => {
           existingWalletId: 'myWallet'
         }
       },
-
-      handleAvailableStatus: 'AVAILABLE' | 'INVALID' | 'UNAVAILABLE' | 'UNKNOWN_ERROR' | '',
-      isCheckingHandleAvailability: true,
-      currencyConfigs: [{ currencyCode: 'BTC' }],
-      checkHandleAvailability: handle => undefined,
+      supportedFiats: [
+        {
+          label: '',
+          value: ''
+        }
+      ],
       theme: getTheme()
     }
-    const actual = renderer.render(<CreateWalletAccountSetup {...props} />)
+    const actual = renderer.render(<CreateWalletSelectFiatComponent {...props} />)
 
     expect(actual).toMatchSnapshot()
   })

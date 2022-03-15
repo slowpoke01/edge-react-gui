@@ -5,9 +5,9 @@ import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
 import WalletIcon from '../../assets/images/createWallet/wallet_icon_lg.png'
+import { CryptoExchangeComponent } from '../../components/scenes/CryptoExchangeScene.js'
+import { getTheme } from '../../components/services/ThemeContext.js'
 import { EDGE_CONTENT_SERVER } from '../../constants/WalletAndCurrencyConstants.js'
-import { CryptoExchangeComponent } from '../components/scenes/CryptoExchangeScene.js'
-import { getTheme } from '../components/services/ThemeContext.js'
 
 describe('CryptoExchangeComponent', () => {
   it('should render with loading props', () => {

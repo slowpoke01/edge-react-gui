@@ -4,9 +4,9 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { CreateWalletChoiceComponent } from '../components/modals/ChangePinScene.js'
-import { getTheme } from '../components/services/ThemeContext.js'
-import { fakeNavigation } from '../util/fake/fakeNavigation.js'
+import { CreateWalletChoiceComponent } from '../../components/modals/ChangePinScene.js'
+import { getTheme } from '../../components/services/ThemeContext.js'
+import { fakeNavigation } from '../../util/fake/fakeNavigation.js'
 
 describe('CreateWalletChoiceComponent', () => {
   it('should render with loading props', () => {

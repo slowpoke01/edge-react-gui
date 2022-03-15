@@ -4,19 +4,18 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { CreateWalletImportComponent } from '../components/modals/CreateWalletImportComponent.js'
-import { getTheme } from '../components/services/ThemeContext.js'
-import { fakeUser } from '../src/util/fake-user.js'
-import { fakeNavigation } from '../util/fake/fakeNavigation.js'
+import { CreateWalletReviewComponent } from '../../components/scenes/CreateWalletReviewComponent.js'
+import { getTheme } from '../../components/services/ThemeContext.js'
+import { fakeNavigation } from '../../util/fake/fakeNavigation.js'
 
-describe('CreateWalletImportComponent', () => {
+describe('CreateWalletReviewComponent', () => {
   it('should render with loading props', () => {
     const renderer = new ShallowRenderer()
 
     const props = {
       navigation: fakeNavigation,
       route: {
-        name: 'createWalletImport',
+        name: 'createWalletReview',
         params: {
           accountHandle: '',
           selectedWalletType: 'BTC',
@@ -25,11 +24,10 @@ describe('CreateWalletImportComponent', () => {
           existingWalletId: 'myWallet'
         }
       },
-      account: () => fakeUser,
-      context: { apiKey: '', appId: '' }, // used  EdgeContextOptions
+      createCurrencyWallet: async (walletName, walletType, fiatCurrencyCode, cleanedPrivateKey) => undefined,
       theme: getTheme()
     }
-    const actual = renderer.render(<CreateWalletImportComponent {...props} />)
+    const actual = renderer.render(<CreateWalletReviewComponent {...props} />)
 
     expect(actual).toMatchSnapshot()
   })

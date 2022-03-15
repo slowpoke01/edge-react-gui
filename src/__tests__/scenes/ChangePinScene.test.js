@@ -4,12 +4,12 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { ChangePasswordComponent } from '../components/scenes/ChangePasswordScene.js'
-import { getTheme } from '../components/services/ThemeContext.js'
-import { fakeUser } from '../src/util/fake-user.js'
-import { fakeNavigation } from '../util/fake/fakeNavigation.js'
+import { ChangePinComponent } from '../../components/modals/ChangePinScene.js'
+import { getTheme } from '../../components/services/ThemeContext.js'
+import { fakeNavigation } from '../../util/fake/fakeNavigation.js'
+import { fakeUser } from '../../util/fake-user.js'
 
-describe('ChangePasswordComponent', () => {
+describe('ChangePinComponent', () => {
   it('should render with loading props', () => {
     const renderer = new ShallowRenderer()
 
@@ -19,7 +19,7 @@ describe('ChangePasswordComponent', () => {
       context: { apiKey: '', appId: '' }, // used  EdgeContextOptions
       theme: getTheme()
     }
-    const actual = renderer.render(<ChangePasswordComponent {...props} />)
+    const actual = renderer.render(<ChangePinComponent {...props} />)
 
     expect(actual).toMatchSnapshot()
   })

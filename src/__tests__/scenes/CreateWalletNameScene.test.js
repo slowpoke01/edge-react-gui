@@ -4,18 +4,18 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { CreateWalletSelectFiatComponent } from '../components/scenes/CreateWalletSelectFiat.js'
-import { getTheme } from '../components/services/ThemeContext.js'
-import { fakeNavigation } from '../util/fake/fakeNavigation.js'
+import { CreateWalletName } from '../../components/scenes/CreateWalletName.js'
+import { getTheme } from '../../components/services/ThemeContext.js'
+import { fakeNavigation } from '../../util/fake/fakeNavigation.js'
 
-describe('CreateWalletSelectFiatComponent', () => {
+describe('createWalletName', () => {
   it('should render with loading props', () => {
     const renderer = new ShallowRenderer()
 
     const props = {
       navigation: fakeNavigation,
       route: {
-        name: 'createWalletReview',
+        name: 'createWalletName',
         params: {
           accountHandle: '',
           selectedWalletType: 'BTC',
@@ -24,15 +24,9 @@ describe('CreateWalletSelectFiatComponent', () => {
           existingWalletId: 'myWallet'
         }
       },
-      supportedFiats: [
-        {
-          label: '',
-          value: ''
-        }
-      ],
       theme: getTheme()
     }
-    const actual = renderer.render(<CreateWalletSelectFiatComponent {...props} />)
+    const actual = renderer.render(<CreateWalletName {...props} />)
 
     expect(actual).toMatchSnapshot()
   })

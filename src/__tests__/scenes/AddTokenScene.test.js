@@ -4,8 +4,8 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { AddToken } from '../src/components/scenes/AddTokenScene'
-import { getTheme } from '../src/components/services/ThemeContext.js'
+import { AddToken } from '../../components/scenes/AddTokenScene'
+import { getTheme } from '../../components/services/ThemeContext.js'
 
 describe('Request', () => {
   it('should render with loading props', () => {

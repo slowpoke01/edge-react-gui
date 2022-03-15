@@ -4,10 +4,10 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { CreateWalletSelectCryptoComponent } from '../components/scenes/CreateWalletSelectCryptoScene.js'
-import { getTheme } from '../components/services/ThemeContext.js'
-import { fakeUser } from '../src/util/fake-user.js'
-import { fakeNavigation } from '../util/fake/fakeNavigation.js'
+import { CreateWalletSelectCryptoComponent } from '../../components/scenes/CreateWalletSelectCryptoScene.js'
+import { getTheme } from '../../components/services/ThemeContext.js'
+import { fakeNavigation } from '../../util/fake/fakeNavigation.js'
+import { fakeUser } from '../../util/fake-user.js'
 
 describe('CreateWalletSelectCrypto', () => {
   it('should render with loading props', () => {
