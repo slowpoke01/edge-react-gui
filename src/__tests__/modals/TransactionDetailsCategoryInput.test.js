@@ -15,9 +15,22 @@ describe('TransactionDetailsCategoryInput', () => {
     const props = {
       bridge: fakeAirshipBridge,
       categories: {
-        Exchange: 'Buy Bitcoin',
-        Income: 'Sell Bitcoin',
-        Expense: 'Air Travel'
+        exchange: {
+          syntax: 'Hello exchange',
+          key: 'exchange'
+        },
+        expense: {
+          syntax: 'Hello expense',
+          key: 'expense'
+        },
+        transfer: {
+          syntax: 'Hello transfer',
+          key: 'transfer'
+        },
+        income: {
+          syntax: 'Hello income',
+          key: 'income'
+        }
       },
       subCategories: ['Exchange', 'Income', 'Expense'],
       category: {

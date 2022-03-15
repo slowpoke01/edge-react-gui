@@ -27,6 +27,7 @@ describe('AccelerateTxModelComponent', () => {
       },
 
       wallet: {
+        fiatCurrencyCode: 'iso:USD',
         addCustomToken: 'shib',
         currencyInfo: {
           currencyCode: 'SHIB'
