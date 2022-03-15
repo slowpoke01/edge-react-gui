@@ -1,86 +1,102 @@
 // @flow
 
-import { abs, div, lt, mul, toFixed } from 'biggystring'
+import { abs, div, lt, mul, sub, toFixed } from 'biggystring'
+import { asNumber, asObject, asOptional, asString, asUnknown } from 'cleaners'
 import csvStringify from 'csv-stringify/lib/browser/sync'
 import { type EdgeCurrencyWallet, type EdgeGetTransactionsOptions, type EdgeTransaction } from 'edge-core-js'
 
 import { DECIMAL_PRECISION, isSentTransaction, splitTransactionCategory } from '../util/utils.js'
+
+const asExportData = asObject({
+  amount: asString,
+  amountFiat: asString,
+  category: asString,
+  currencyCode: asString,
+  date: asString,
+  denominationName: asString,
+  edgeTransaction: asObject((raw: any) => raw),
+  fiatCurrencyCode: asString,
+  name: asString,
+  networkFeeField: asString,
+  notes: asString,
+  rate: asString,
+  time: asString
+})
+
+const asCsvExportData = asObject({
+  CURRENCY_CODE: asString,
+  DATE: asString,
+  TIME: asString,
+  PAYEE_PAYER_NAME: asString,
+  AMT_ASSET: asString,
+  DENOMINATION: asString,
+  CATEGORY: asString,
+  NOTES: asString,
+  AMT_NETWORK_FEES_ASSET: asString,
+  TXID: asString,
+  OUR_RECEIVE_ADDRESSES: asString,
+  VER: asNumber,
+  DEVICE_DESCRIPTION: asString
+})
+
+const asQboExportData = asObject({
+  TRNTYPE: asString,
+  DTPOSTED: asString,
+  TRNAMT: asString,
+  FITID: asString,
+  NAME: asOptional(asString),
+  MEMO: asString,
+  CURRENCY: asObject({
+    CURRATE: asString,
+    CURSYM: asString
+  })
+})
+
+type ExportType = 'csv' | 'qbo'
+type ExportData = $Call<typeof asExportData>
+type ExportCSvData = $Call<typeof asCsvExportData>
+type ExportQboData = $Call<typeof asQboExportData>
 
 const checkIfCategoryIsTransfer = (fullCategory: string): boolean => {
   const { category } = splitTransactionCategory(fullCategory)
   return category.toLowerCase() === 'transfer'
 }
 
-export const exportTransactions = async (exportType: 'csv' | 'qbo', wallet: EdgeCurrencyWallet, txs: EdgeTransaction[], opts: EdgeGetTransactionsOptions = {}):  Promise<string> =>  {
-  const { currencyCode = wallet.currencyInfo.currencyCode, denomination } = opts
-
-  let denomName = ''
-  if (denomination != null) {
-    const denomObj = wallet.currencyInfo.denominations.find(edgeDenom => edgeDenom.multiplier === denomination)
-    if (denomObj != null) denomName = denomObj.name
-  }
-  return exportTransactionsToCSVInner(txs, currencyCode, wallet.fiatCurrencyCode, denomination, denomName)
+const getDenominationName = (wallet: EdgeCurrencyWallet, denomination?: string): string => {
+  if (denomination == null) return ''
+  const denominationObject = wallet.currencyInfo.denominations.find(edgeDenom => edgeDenom.multiplier === denomination)
+  return denominationObject?.name ?? ''
 }
 
-export async function exportTransactionsToQBO(wallet: EdgeCurrencyWallet, txs: EdgeTransaction[], opts: EdgeGetTransactionsOptions): Promise<string> {
-  const { currencyCode = wallet.currencyInfo.currencyCode, denomination } = opts
-  return exportTransactionsToQBOInner(txs, currencyCode, wallet.fiatCurrencyCode, denomination, Date.now())
-}
+const getExportData = (edgeTransaction: EdgeTransaction, opts: EdgeGetTransactionsOptions, denominationName: string, fiatCurrencyCode: string): ExportData => {
+  const { currencyCode = '', denomination } = opts
+  const amount: string = denomination ? div(edgeTransaction.nativeAmount, denomination, DECIMAL_PRECISION) : edgeTransaction.nativeAmount
+  const networkFeeField: string = denomination ? div(edgeTransaction.networkFee, denomination, DECIMAL_PRECISION) : edgeTransaction.networkFee
+  const { date, time } = makeCsvDateTime(edgeTransaction.date)
+  const { metadata = {} } = edgeTransaction
+  const { name = '', category = '', notes = '' } = metadata
+  const amountFiat = metadata ? String(metadata.amountFiat) : '0'
 
-export async function exportTransactionsToCSV(wallet: EdgeCurrencyWallet, txs: EdgeTransaction[], opts: EdgeGetTransactionsOptions = {}): Promise<string> {
-  const { currencyCode = wallet.currencyInfo.currencyCode, denomination } = opts
+  // Calculate Rate
+  const absFiat = abs(amountFiat.toString())
+  const absAmount = abs(amount)
+  const rate = absAmount !== '0' ? div(absFiat, absAmount, 8) : '0'
 
-  let denomName = ''
-  if (denomination != null) {
-    const denomObj = wallet.currencyInfo.denominations.find(edgeDenom => edgeDenom.multiplier === denomination)
-    if (denomObj != null) denomName = denomObj.name
-  }
-  return exportTransactionsToCSVInner(txs, currencyCode, wallet.fiatCurrencyCode, denomination, denomName)
-
-  const items: any[] = []
-
-  for (const edgeTx of edgeTransactions) {
-    const amount: string = denom ? div(edgeTx.nativeAmount, denom, DECIMAL_PRECISION) : edgeTx.nativeAmount
-    const networkFeeField: string = denom ? div(edgeTx.networkFee, denom, DECIMAL_PRECISION) : edgeTx.networkFee
-    const { date, time } = makeCsvDateTime(edgeTx.date)
-    const { metadata = {} } = edgeTx
-    const { name = '', category = '', notes = '' } = metadata
-    const amountFiat = metadata ? String(metadata.amountFiat) : '0'
-    const csvData = { currencyCode, date, time, name, amount, denomName, fiatCurrencyCode, amountFiat, networkFeeField, category, notes, edgeTx }
-
-    const TRNAMT: string = denom ? div(edgeTx.nativeAmount, denom, DECIMAL_PRECISION) : edgeTx.nativeAmount
-    const TRNTYPE = lt(edgeTx.nativeAmount, '0') ? 'DEBIT' : 'CREDIT'
-    const DTPOSTED = makeOfxDate(edgeTx.date)
-    let NAME: string = ''
-    let amountFiat: number = 0
-    let category: string = ''
-    let notes: string = ''
-    if (edgeTx.metadata) {
-      NAME = edgeTx.metadata.name ? edgeTx.metadata.name : ''
-      amountFiat = edgeTx.metadata.amountFiat ? edgeTx.metadata.amountFiat : 0
-      category = edgeTx.metadata.category ? edgeTx.metadata.category : ''
-      notes = edgeTx.metadata.notes ? edgeTx.metadata.notes : ''
-    }
-    const absFiat = abs(amountFiat.toString())
-    const absAmount = abs(TRNAMT)
-    const CURRATE = absAmount !== '0' ? div(absFiat, absAmount, 8) : '0'
-    let memo = `// Rate=${CURRATE} ${fiatCurrencyCode}=${amountFiat} category="${category}" memo="${notes}"`
-    if (memo.length > 250) {
-      memo = memo.substring(0, 250) + '...'
-    }
-
-    if (isSentTransaction(edgeTx) && checkIfCategoryIsTransfer(category)) {
-      const absFiat = abs(amountFiat.toString())
-      const absAmount = abs(amount)
-      const rate = absAmount !== '0' ? div(absFiat, absAmount, 8) : '0'
-      const networkFeeFiat = toFixed(mul(networkFeeField, rate), 2, 2)
-
-      // items.push(processCsvData({ ...csvData, networkFeeField: '' }))
-      // items.push(processCsvData({ ...csvData, amount: '', amountFiat: networkFeeFiat }))
-    } else {
-      // items.push(processCsvData(csvData))
-    }
-  }
+  return asExportData({
+    amount,
+    amountFiat,
+    category,
+    currencyCode,
+    date,
+    denominationName,
+    edgeTransaction,
+    fiatCurrencyCode,
+    name,
+    networkFeeField,
+    notes,
+    rate,
+    time
+  })
 }
 
 function padZero(val: string): string {
@@ -167,68 +183,66 @@ function makeCsvDateTime(date: number): { date: string, time: string } {
   }
 }
 
-export function exportTransactionsToQBOInner(
-  edgeTransactions: EdgeTransaction[],
-  currencyCode: string,
-  fiatCurrencyCode: string,
-  denom?: string,
-  dateNow: number
-): string {
-  const STMTTRN: any[] = []
-  const now = makeOfxDate(dateNow / 1000)
+const exportTransactionToQBO = (exportData: ExportData): ExportQboData => {
+  const { amount, amountFiat, category, edgeTransaction, fiatCurrencyCode, name, notes, rate } = exportData
+  const TRNTYPE = lt(edgeTransaction.nativeAmount, '0') ? 'DEBIT' : 'CREDIT'
+  const DTPOSTED = makeOfxDate(edgeTransaction.date)
 
-  for (const edgeTx of edgeTransactions) {
-    const TRNAMT: string = denom ? div(edgeTx.nativeAmount, denom, DECIMAL_PRECISION) : edgeTx.nativeAmount
-    const TRNTYPE = lt(edgeTx.nativeAmount, '0') ? 'DEBIT' : 'CREDIT'
-    const DTPOSTED = makeOfxDate(edgeTx.date)
-    let NAME: string = ''
-    let amountFiat: number = 0
-    let category: string = ''
-    let notes: string = ''
-    if (edgeTx.metadata) {
-      NAME = edgeTx.metadata.name ? edgeTx.metadata.name : ''
-      amountFiat = edgeTx.metadata.amountFiat ? edgeTx.metadata.amountFiat : 0
-      category = edgeTx.metadata.category ? edgeTx.metadata.category : ''
-      notes = edgeTx.metadata.notes ? edgeTx.metadata.notes : ''
-    }
-    const absFiat = abs(amountFiat.toString())
-    const absAmount = abs(TRNAMT)
-    const CURRATE = absAmount !== '0' ? div(absFiat, absAmount, 8) : '0'
-    let memo = `// Rate=${CURRATE} ${fiatCurrencyCode}=${amountFiat} category="${category}" memo="${notes}"`
-    if (memo.length > 250) {
-      memo = memo.substring(0, 250) + '...'
-    }
-    const qboTx = {
-      TRNTYPE,
-      DTPOSTED,
-      TRNAMT,
-      FITID: edgeTx.txid,
-      MEMO: memo,
-      CURRENCY: {
-        CURRATE: CURRATE,
-        CURSYM: fiatCurrencyCode
-      }
-    }
-    const qboTxNamed = {
-      TRNTYPE,
-      DTPOSTED,
-      TRNAMT,
-      FITID: edgeTx.txid,
-      NAME,
-      MEMO: memo,
-      CURRENCY: {
-        CURRATE: CURRATE,
-        CURSYM: fiatCurrencyCode
-      }
-    }
-    const use = NAME === '' ? qboTx : qboTxNamed
-    if (isSentTransaction(edgeTx) && checkIfCategoryIsTransfer(category)) {
-      STMTTRN.push(use)
-      STMTTRN.push({ ...use, TRNTYPE: denom ? div(edgeTx.networkFee, denom, DECIMAL_PRECISION) : edgeTx.networkFee })
-    } else {
-      STMTTRN.push(use)
-    }
+  let memo = `// Rate=${rate} ${fiatCurrencyCode}=${amountFiat} category="${category}" memo="${notes}"`
+  if (memo.length > 250) {
+    memo = memo.substring(0, 250) + '...'
   }
+
+  if (name === '') {
+    return asQboExportData({
+      TRNTYPE,
+      DTPOSTED,
+      TRNAMT: amount,
+      FITID: edgeTransaction.txid,
+      MEMO: memo,
+      CURRENCY: {
+        CURRATE: rate,
+        CURSYM: fiatCurrencyCode
+      }
+    })
+  }
+  return asQboExportData({
+    TRNTYPE,
+    DTPOSTED,
+    TRNAMT: amount,
+    FITID: edgeTransaction.txid,
+    NAME: name,
+    MEMO: memo,
+    CURRENCY: {
+      CURRATE: rate,
+      CURSYM: fiatCurrencyCode
+    }
+  })
+}
+
+const exportTransactionToCSV = (exportData: ExportData): ExportCSvData => {
+  const { amount, amountFiat, category, currencyCode, date, denominationName, edgeTransaction, fiatCurrencyCode, name, networkFeeField, notes, time } =
+    exportData
+  return asCsvExportData({
+    CURRENCY_CODE: currencyCode,
+    DATE: date,
+    TIME: time,
+    PAYEE_PAYER_NAME: name,
+    AMT_ASSET: amount,
+    DENOMINATION: denominationName,
+    [fiatCurrencyCode]: String(amountFiat),
+    CATEGORY: category,
+    NOTES: notes,
+    AMT_NETWORK_FEES_ASSET: networkFeeField,
+    TXID: edgeTransaction.txid,
+    OUR_RECEIVE_ADDRESSES: edgeTransaction.ourReceiveAddresses.join(','),
+    VER: 1,
+    DEVICE_DESCRIPTION: edgeTransaction.deviceDescription ?? ''
+  })
+}
+
+const finalizeExportToQBO = (STMTTRN: ExportQboData[]): string => {
+  const now = makeOfxDate(Date.now() / 1000)
 
   const header = {
     OFXHEADER: '100',
@@ -290,77 +304,65 @@ export function exportTransactionsToQBOInner(
   return exportOfx(header, body)
 }
 
-// Export Transaction To CSV
-
-type CSVData = {
-  currencyCode: string,
-  date: string,
-  time: string,
-  name: string,
-  amount: string,
-  denomName: string,
-  fiatCurrencyCode: string,
-  amountFiat: string,
-  networkFeeField: string,
-  category: string,
-  notes: string,
-  edgeTx: EdgeTransaction
-}
-
-const processCsvData = (data: CSVData) => {
-  const { currencyCode, date, time, name, amount, denomName, fiatCurrencyCode, amountFiat, networkFeeField, category, notes, edgeTx } = data
-  return {
-    CURRENCY_CODE: currencyCode,
-    DATE: date,
-    TIME: time,
-    PAYEE_PAYER_NAME: name,
-    AMT_ASSET: amount,
-    DENOMINATION: denomName,
-    [fiatCurrencyCode]: String(amountFiat),
-    CATEGORY: category,
-    NOTES: notes,
-    AMT_NETWORK_FEES_ASSET: networkFeeField,
-    TXID: edgeTx.txid,
-    OUR_RECEIVE_ADDRESSES: edgeTx.ourReceiveAddresses.join(','),
-    VER: 1,
-    DEVICE_DESCRIPTION: edgeTx.deviceDescription ?? ''
-  }
-}
-
-export function exportTransactionsToCSVInner(
-  edgeTransactions: EdgeTransaction[],
-  currencyCode: string,
-  fiatCurrencyCode: string,
-  denom?: string,
-  denomName: string = ''
-): string {
-  const items: any[] = []
-
-  for (const edgeTx of edgeTransactions) {
-    const amount: string = denom ? div(edgeTx.nativeAmount, denom, DECIMAL_PRECISION) : edgeTx.nativeAmount
-    const networkFeeField: string = denom ? div(edgeTx.networkFee, denom, DECIMAL_PRECISION) : edgeTx.networkFee
-    const { date, time } = makeCsvDateTime(edgeTx.date)
-    const { metadata = {} } = edgeTx
-    const { name = '', category = '', notes = '' } = metadata
-    const amountFiat = metadata ? String(metadata.amountFiat) : '0'
-    const csvData = { currencyCode, date, time, name, amount, denomName, fiatCurrencyCode, amountFiat, networkFeeField, category, notes, edgeTx }
-
-    if (isSentTransaction(edgeTx) && checkIfCategoryIsTransfer(category)) {
-      const absFiat = abs(amountFiat.toString())
-      const absAmount = abs(amount)
-      const rate = absAmount !== '0' ? div(absFiat, absAmount, 8) : '0'
-      const networkFeeFiat = toFixed(mul(networkFeeField, rate), 2, 2)
-
-      items.push(processCsvData({ ...csvData, networkFeeField: '' }))
-      items.push(processCsvData({ ...csvData, amount: '', amountFiat: networkFeeFiat }))
-    } else {
-      items.push(processCsvData(csvData))
-    }
-  }
-
+const finalizeExportToCSV = (items: any): string => {
   return csvStringify(items, {
     header: true,
     quoted_string: true,
     record_delimiter: 'windows'
   })
+}
+
+const exportTypeFunction = {
+  csv: exportTransactionToCSV,
+  qbo: exportTransactionToQBO,
+  csvFinalize: finalizeExportToCSV,
+  qboFinalize: finalizeExportToQBO
+}
+
+const sendTransactionAmountExportData = (exportData: ExportData): ExportData => {
+  const { networkFeeField, rate } = exportData
+  const amount = sub(exportData.amount, networkFeeField)
+  return {
+    ...exportData,
+    amount,
+    amountFiat: toFixed(mul(amount, rate), 2, 2),
+    networkFeeField: '0'
+  }
+}
+
+const sendTransactionFeeExportData = (exportData: ExportData): ExportData => {
+  const { networkFeeField, rate } = exportData
+  return {
+    ...exportData,
+    amount: networkFeeField,
+    amountFiat: toFixed(mul(networkFeeField, rate), 2, 2)
+  }
+}
+
+const processExportData = (exportData: ExportData, exportType: ExportType): Array<ExportCSvData | ExportQboData> => {
+  if (isSentTransaction(exportData.edgeTransaction) && checkIfCategoryIsTransfer(exportData.category)) {
+    return [
+      exportTypeFunction[exportType](sendTransactionAmountExportData(exportData)),
+      exportTypeFunction[exportType](sendTransactionFeeExportData(exportData))
+    ]
+  }
+
+  return [exportTypeFunction[exportType](exportData)]
+}
+
+export const exportTransactions = async (
+  exportType: ExportType,
+  wallet: EdgeCurrencyWallet,
+  edgeTransactions: EdgeTransaction[],
+  opts: EdgeGetTransactionsOptions = {}
+): Promise<string> => {
+  const newOpts = { ...opts, currencyCode: opts.currencyCode ?? wallet.currencyInfo.currencyCode }
+  const denominationName = getDenominationName(wallet, opts.denomination)
+  const items: any[] = []
+
+  for (const edgeTransaction of edgeTransactions) {
+    items.push(...processExportData(getExportData(edgeTransaction, newOpts, denominationName, wallet.fiatCurrencyCode), exportType))
+  }
+
+  return exportTypeFunction[`${exportType}Finalize}`](items)
 }
