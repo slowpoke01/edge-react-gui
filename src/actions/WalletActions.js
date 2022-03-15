@@ -5,6 +5,7 @@ import * as React from 'react'
 import { sprintf } from 'sprintf-js'
 
 import { ButtonsModal } from '../components/modals/ButtonsModal.js'
+import { StakePolicy } from '../components/scenes/Staking/StakeApi.js'
 import { Airship, showError } from '../components/services/AirshipInstance.js'
 import { CREATE_WALLET_ACCOUNT_SELECT, CREATE_WALLET_ACCOUNT_SETUP } from '../constants/SceneKeys.js'
 import { getSpecialCurrencyInfo } from '../constants/WalletAndCurrencyConstants.js'
@@ -221,6 +222,64 @@ export const setWalletEnabledTokens = (walletId: string, enabledTokens: string[]
     dispatch(refreshWallet(walletId))
   })
 }
+
+export const getStakePolicies =
+  (walletId: string) =>
+  async (dispatch: Dispatch, getState: GetState): Promise<StakePolicy[]> => {
+    return [
+      {
+        policyId: 'TOMBTSHARE',
+
+        stakeAssets: {
+          fantom: {
+            TOMB: true
+          }
+        },
+
+        rewardsAssets: {
+          fantom: {
+            TSHARE: true
+          }
+        },
+
+        mustClaimRewards: true
+      },
+      {
+        policyId: 'TOMBFTMTSHARE',
+
+        stakeAssets: {
+          fantom: {
+            TOMB: true,
+            FTM: true
+          }
+        },
+
+        rewardsAssets: {
+          fantom: {
+            TSHARE: true
+          }
+        },
+        mustClaimRewards: true
+      },
+      {
+        policyId: 'TSHAREFTMTSHARE',
+
+        stakeAssets: {
+          fantom: {
+            TSHARE: true,
+            FTM: true
+          }
+        },
+
+        rewardsAssets: {
+          fantom: {
+            TSHARE: true
+          }
+        },
+        mustClaimRewards: true
+      }
+    ]
+  }
 
 export const getEnabledTokens = (walletId: string) => async (dispatch: Dispatch, getState: GetState) => {
   // get a snapshot of the state
