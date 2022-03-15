@@ -56,7 +56,7 @@ type State = {
 
 type Props = StateProps & OwnProps & DispatchProps & ThemeProps
 
-class AddressModalComponent extends React.Component<Props, State> {
+export class AddressModalComponent extends React.Component<Props, State> {
   fioCheckQueue: number = 0
 
   constructor(props: Props) {
