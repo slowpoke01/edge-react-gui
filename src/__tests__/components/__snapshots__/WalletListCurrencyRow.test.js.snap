@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Request should render with loading props 1`] = `
+<WithTheme(ClickableRowComponent)
+  gradient={true}
+  highlight={true}
+  onLongPress={[Function]}
+  onPress={[Function]}
+  paddingRem={11}
+>
+  <WithTheme(CardContentComponent)
+    image={
+      <Memo(Connect(WithTheme(WalletProgressIconComponent)))
+        currencyCode="string"
+        walletId="string"
+      />
+    }
+    subTitle="string"
+    subValue="stringstring"
+    title={
+      <React.Fragment>
+        <WithTheme(EdgeTextComponent)
+          style={
+            Object {
+              "flexShrink": 1,
+              "fontFamily": "Quicksand-Medium",
+              "marginRight": 17,
+            }
+          }
+        >
+          string
+        </WithTheme(EdgeTextComponent)>
+        <WithTheme(EdgeTextComponent)
+          style={
+            Array [
+              Object {
+                "flexShrink": 2,
+              },
+              Object {
+                "color": "#A4C7DF",
+              },
+            ]
+          }
+        >
+          string str,ing.00 
+        </WithTheme(EdgeTextComponent)>
+      </React.Fragment>
+    }
+    value={
+      <WithTheme(EdgeTextComponent)
+        style={
+          Object {
+            "marginLeft": 11,
+            "textAlign": "right",
+          }
+        }
+      >
+        string
+      </WithTheme(EdgeTextComponent)>
+    }
+  />
+</WithTheme(ClickableRowComponent)>
+`;

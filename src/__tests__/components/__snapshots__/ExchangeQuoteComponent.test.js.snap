@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExchangeQuote should render with loading props 1`] = `
+<WithTheme(CardComponent)>
+  <WithTheme(CardContentComponent)
+    image={
+      <FastImage
+        source={
+          Object {
+            "uri": "string",
+          }
+        }
+        style={
+          Object {
+            "height": 34,
+            "resizeMode": "contain",
+            "width": 34,
+          }
+        }
+      />
+    }
+    subTitle="string"
+    subValue="string string"
+    title="string"
+    value="string string"
+  />
+  <React.Fragment>
+    <WithTheme(DataRowComponent)
+      label={
+        <WithTheme(EdgeTextComponent)
+          style={
+            Object {
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        >
+          Max network fee
+        </WithTheme(EdgeTextComponent)>
+      }
+      marginRem={
+        Array [
+          1,
+          0,
+          0,
+        ]
+      }
+      value={
+        <WithTheme(EdgeTextComponent)
+          style={
+            Object {
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        >
+          0
+        </WithTheme(EdgeTextComponent)>
+      }
+    />
+    <WithTheme(DataRowComponent)
+      label={
+        <WithTheme(EdgeTextComponent)
+          style={
+            Object {
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        >
+          Total Amount
+        </WithTheme(EdgeTextComponent)>
+      }
+      value={
+        <WithTheme(EdgeTextComponent)
+          style={
+            Object {
+              "fontSize": 17,
+              "fontWeight": "600",
+            }
+          }
+        >
+          string string
+        </WithTheme(EdgeTextComponent)>
+      }
+    />
+  </React.Fragment>
+</WithTheme(CardComponent)>
+`;

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Request should render with loading props 1`] = `
+<WithTheme(TransactionRowComponent)
+  cryptoAmount="string"
+  denominationSymbol="string"
+  fiatAmount="string"
+  fiatSymbol="string"
+  isSentTransaction={true}
+  onPress={[Function]}
+  requiredConfirmations={11}
+  selectedCurrencyName="string"
+  thumbnailPath="string"
+  transaction={11}
+  walletBlockHeight={11}
+/>
+`;
