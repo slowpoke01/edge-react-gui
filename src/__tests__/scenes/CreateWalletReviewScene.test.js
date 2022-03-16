@@ -4,7 +4,7 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { CreateWalletReviewComponent } from '../../components/scenes/CreateWalletReviewComponent.js'
+import { CreateWalletReviewComponent } from '../../components/scenes/CreateWalletReviewScene'
 import { getTheme } from '../../components/services/ThemeContext.js'
 import { fakeNavigation } from '../../util/fake/fakeNavigation.js'
 

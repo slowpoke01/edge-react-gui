@@ -4,7 +4,7 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { AddToken } from '../../components/scenes/AddTokenScene'
+import { AddToken } from '../../components/scenes/AddTokenScene.js'
 import { getTheme } from '../../components/services/ThemeContext.js'
 
 describe('Request', () => {
@@ -14,7 +14,8 @@ describe('Request', () => {
     const props = {
       route: {
         name: 'addToken',
-        params: ['Ethereum', 'ETH', '0x123', '18'],
+        params: ['Ethereum', 'ETH', '0x123', '18']
+      },
       addNewToken: (walletId, currencyName, currencyCode, contractAddress, denomination, type) => undefined,
       addTokenPending: true,
       currentCustomTokens: [
@@ -58,7 +59,6 @@ describe('Request', () => {
       },
       theme: getTheme()
     }
-
     const actual = renderer.render(<AddToken {...props} />)
 
     expect(actual).toMatchSnapshot()

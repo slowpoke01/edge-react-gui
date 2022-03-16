@@ -4,7 +4,7 @@
 import * as React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow'
 
-import { ChangePinComponent } from '../../components/modals/ChangePinScene.js'
+import { ChangePinComponent } from '../../components/scenes/ChangePinScene.js'
 import { getTheme } from '../../components/services/ThemeContext.js'
 import { fakeNavigation } from '../../util/fake/fakeNavigation.js'
 import { fakeUser } from '../../util/fake-user.js'

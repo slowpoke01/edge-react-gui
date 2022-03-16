@@ -7,7 +7,6 @@ import ShallowRenderer from 'react-test-renderer/shallow'
 import WalletIcon from '../../assets/images/createWallet/wallet_icon_lg.png'
 import { CryptoExchangeComponent } from '../../components/scenes/CryptoExchangeScene.js'
 import { getTheme } from '../../components/services/ThemeContext.js'
-import { EDGE_CONTENT_SERVER } from '../../constants/WalletAndCurrencyConstants.js'
 
 describe('CryptoExchangeComponent', () => {
   it('should render with loading props', () => {
@@ -22,10 +21,21 @@ describe('CryptoExchangeComponent', () => {
           fiatCurrencyCode: 'USD'
         }
       },
-      fromWalletName: name ?? '',
-      fromExchangeAmount: string,
-      fromWalletPrimaryInfo: GuiCurrencyInfo,
-      fromFiatToCrypto: string,
+      fromWalletName: 'BTC Wallet',
+      fromExchangeAmount: '1000',
+      fromWalletPrimaryInfo: {
+        displayCurrencyCode: 'BTC',
+        exchangeCurrencyCode: 'BTC'
+      },
+      displayDenomination: {
+        multiplier: '10000000',
+        name: 'Bitcoin'
+      },
+      exchangeDenomination: {
+        multiplier: '10000000',
+        name: 'Sats'
+      },
+      fromFiatToCrypto: '500',
       toWalletId: '',
       toFiatCurrencyCode: 'USD',
       toIsoFiatCurrencyCode: {
@@ -33,41 +43,33 @@ describe('CryptoExchangeComponent', () => {
           fiatCurrencyCode: 'USD'
         }
       },
-      toWalletName: name ?? '',
-      toExchangeAmount: string,
+      toWalletName: 'ETH Wallet',
+      toExchangeAmount: '1000',
       toWalletPrimaryInfo: {
-        id: 'SXq1f3x21H2e/h5A4ANvrMoK5xs+sQcDoFWHtCG25BA=',
-        type: 'wallet:monero',
-        name: 'Monero',
-        primaryNativeBalance: '1492780012',
-        nativeBalances: { XMR: '1492780012' },
-        currencyNames: { XMR: 'Monero' },
-        currencyCode: 'XMR',
-        isoFiatCurrencyCode: 'iso:USD',
-        fiatCurrencyCode: 'USD',
-        denominations: [{}],
-        allDenominations: { XMR: {} },
-        metaTokens: [],
-        enabledTokens: [],
-        receiveAddress: { metadata: {}, nativeAmount: '0', publicAddress: '432hJPUp2C...' },
-        blockHeight: 1688551,
-        symbolImage: `${EDGE_CONTENT_SERVER}/XMR/XMR.png`,
-        symbolImageDarkMono: `${EDGE_CONTENT_SERVER}/XMR/XMR_dark.png`,
-        key: 'SXq1f3x21H2e/h5A4ANvrMoK5xs+sQcDoFWHtCG25BA='
+        displayCurrencyCode: 'ETH',
+        exchangeCurrencyCode: 'ETH',
+        displayDenomination: {
+          multiplier: '100000000',
+          name: 'Ethereum'
+        },
+        exchangeDenomination: {
+          multiplier: '10000000',
+          name: 'Gwei'
+        }
       },
-      toFiatToCrypto: string,
-      pluginId: string,
+      toFiatToCrypto: '500',
+      pluginId: 'ChangeNow',
       fromCurrencyCode: 'BTC',
       fromCurrencyIcon: WalletIcon,
       toCurrencyIcon: WalletIcon,
-      toCurrencyCode: 'BTC',
+      toCurrencyCode: 'ETH',
       forceUpdateGuiCounter: 0,
       calculatingMax: true,
       hasMaxSpend: true,
       insufficient: false,
       genericError: null,
       onSelectWallet: async (walletId, currencyCode, direction) => undefined,
-      getQuoteForTransaction: (fromWalletNativeAmount, onApprove: () => undefined) => undefined,
+      getQuoteForTransaction: (fromWalletNativeAmount, onApprove) => undefined,
       exchangeMax: async () => undefined,
       theme: getTheme()
     }
