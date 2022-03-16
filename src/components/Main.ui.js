@@ -98,8 +98,8 @@ import {
   SETTINGS_OVERVIEW,
   SETTINGS_OVERVIEW_TAB,
   SPENDING_LIMITS,
-  STAKING_OPTIONS,
-  STAKING_OVERVIEW,
+  STAKE_OPTIONS,
+  STAKE_OVERVIEW,
   TERMS_OF_SERVICE,
   TRANSACTION_DETAILS,
   TRANSACTION_LIST,
@@ -153,7 +153,7 @@ import { SendScene } from './scenes/SendScene.js'
 import { SettingsScene } from './scenes/SettingsScene.js'
 import { SpendingLimitsScene } from './scenes/SpendingLimitsScene.js'
 import { StakeOptionsScene } from './scenes/Staking/StakeOptionsScene'
-import { StakingOverviewScene } from './scenes/Staking/StakingOverviewScene'
+import { StakeOverviewScene } from './scenes/Staking/StakeOverviewScene'
 import { TermsOfServiceComponent } from './scenes/TermsOfServiceScene.js'
 import { TransactionDetailsScene } from './scenes/TransactionDetailsScene.js'
 import { TransactionList } from './scenes/TransactionListScene.js'
@@ -355,17 +355,17 @@ export class MainComponent extends React.Component<Props> {
               />
 
               <Scene
-                key={STAKING_OVERVIEW}
+                key={STAKE_OVERVIEW}
                 navTransparent
-                component={ifLoggedIn(StakingOverviewScene)}
+                component={ifLoggedIn(StakeOverviewScene)}
                 renderLeftButton={<BackButton onPress={this.handleBack} />}
                 renderRightButton={<SideMenuButton />}
               />
 
               <Scene
-                key={STAKING_OPTIONS}
+                key={STAKE_OPTIONS}
                 navTransparent
-                component={ifLoggedIn(StakeOptionsScene)}
+                component={withNavigation(ifLoggedIn(StakeOptionsScene))}
                 renderLeftButton={<BackButton onPress={this.handleBack} />}
                 renderRightButton={<SideMenuButton />}
               />

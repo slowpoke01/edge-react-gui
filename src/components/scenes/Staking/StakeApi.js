@@ -96,3 +96,93 @@ export type StakePlugin = {
   fetchStakeQuote: (request: StakeQuoteRequest) => Promise<StakeQuote>,
   fetchStakeDetails: (request: StakeDetailRequest) => StakeDetails
 }
+
+export const getFakeStakePlugin = (walletId: string): StakePlugin => {
+  return {
+    fetchStakeDetails: (request: StakeDetailRequest) => {
+      return {
+        allocations: [
+          {
+            token: {
+              currencyCode: 'test1',
+              denominations: [],
+              displayName: 'testdisplay',
+              networkLocation: {}
+            },
+            allocationType: 'staked',
+            nativeAmount: '1000000'
+            // lockTime:
+          }
+        ]
+      }
+    },
+    // TODO: 'rewardAssets'
+    getStakePolicies: async (): Promise<StakePolicy[]> => {
+      return [
+        {
+          policyId: 'TOMB->TSHARE',
+          stakeAssets: {
+            fantom: {
+              TOMB: true
+            }
+          },
+          rewardsAssets: {
+            fantom: {
+              TSHARE: true
+            }
+          },
+          mustClaimRewards: true
+        },
+        {
+          policyId: 'TOMB-FTM->TSHARE',
+          stakeAssets: {
+            fantom: {
+              TOMB: true,
+              FTM: true
+            }
+          },
+          rewardsAssets: {
+            fantom: {
+              TSHARE: true
+            }
+          },
+          mustClaimRewards: true
+        },
+        {
+          policyId: 'TSHARE-FTM->TSHARE',
+          stakeAssets: {
+            fantom: {
+              TSHARE: true,
+              FTM: true
+            }
+          },
+          rewardsAssets: {
+            fantom: {
+              TSHARE: true
+            }
+          },
+          mustClaimRewards: true
+        }
+      ]
+    },
+    fetchStakeQuote: async (request: StakeQuoteRequest): Promise<StakeQuote> => {
+      return {
+        stakes: {
+          FTM: {
+            nativeAmount: '10000000'
+          }
+        },
+
+        fees: {
+          FTM: {
+            networkFee: '500'
+          }
+        },
+
+        approve: async () => {
+          console.log('\x1b[30m\x1b[42mapproved!\x1b[0m')
+        }
+      }
+    }
+  }
+}
